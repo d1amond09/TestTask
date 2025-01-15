@@ -11,7 +11,10 @@ public class BookService(ApplicationDbContext dbContext) : IBookService
 
 	public async Task<Book> GetBook()
 	{
-		var book = _dbContext.Books.MaxBy(b => b.Price * b.QuantityPublished);
+		var book = await _dbContext.Books
+			.OrderByDescending(b => b.Price * b.QuantityPublished)
+			.FirstOrDefaultAsync();
+
 		return book;
 	}
 
